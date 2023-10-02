@@ -1,15 +1,15 @@
 {
     "lang": "en",
     "dir": "ltr",
-    "name": "Random Bonjour le monde PWA",
-    "description": "Says \"Hello World!\" in a random human language, on a random background color. It's a PWA, so you can try it in your browser, and add it to your home screen.",
-    "short_name": "Hello World",
+    "name": "Test PWA countries",
+    "description": "Test PWA which calls and stores countries data",
+    "short_name": "Countries",
     "scope": "/",
     "start_url": "/",
     "display": "standalone",
     "orientation": "any",
-    "theme_color": "#ff0000",
-    "background_color": "#0000ff",
+    "theme_color": "#dddddd",
+    "background_color": "#ffffff",
     "icons": [
         {
             "src": "/images/manifest/icons/random-hello-world-pwa-icon-16.png",
