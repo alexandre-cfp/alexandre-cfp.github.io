@@ -26,11 +26,34 @@ function compareByName(a, b) {
 }
 
 function getData() {
-    {
-        fetchCountries()
-            .then(response => response.text().then(text => localStorage.setItem("countries", text)))
-            .catch(err => console.error(err));
+    fetchCountries()
+        .then(async response => {
+            localStorage.setItem("countries", await response.text());
+            setData();
+        })
+        .catch(err => console.error(err));
+}
+
+function setData() {
+    let htmlData = "";
+
+    let countries = JSON.parse(localStorage.getItem("countries")).sort(compareByName);
+
+    for (let c of countries) {
+        htmlData += `
+        <div>
+            <img src="${c.flags.png}" alt="${c.translations.fra.common}">
+            <h1>${c.translations.fra.common}</h1>
+            <p>Population : ${c.population}</p>
+        </div>
+    `;
     }
+
+    let minLastUpdate = Math.floor((Date.now() - localStorage.getItem("lastUpdate")) / 60000);
+
+    document.querySelector("#lastUpdate").innerHTML = `Dernière mise à jour: il y a ${minLastUpdate} min.`;
+
+    document.querySelector("section").innerHTML = htmlData;
 }
 
 if ("serviceWorker" in navigator) {
@@ -43,23 +66,6 @@ if (localStorage.getItem("lastUpdate") === null || localStorage.getItem("countri
     localStorage.setItem("lastUpdate", Date.now());
     getData();
 }
-
-let htmlData = "";
-
-let countries = JSON.parse(localStorage.getItem("countries")).sort(compareByName);
-
-for (let c of countries) {
-    htmlData += `
-        <div>
-            <img src="${c.flags.png}" alt="${c.translations.fra.common}">
-            <h1>${c.translations.fra.common}</h1>
-            <p>Population : ${c.population}</p>
-        </div>
-    `;
+else {
+    setData();
 }
-
-let minLastUpdate = Math.floor((Date.now() - localStorage.getItem("lastUpdate")) / 60000);
-
-document.querySelector("#lastUpdate").innerHTML = `Dernière mise à jour: il y a ${minLastUpdate} min.`;
-
-document.querySelector("section").innerHTML = htmlData;
